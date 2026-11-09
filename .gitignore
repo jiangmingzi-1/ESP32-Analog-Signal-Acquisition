@@ -1,0 +1,37 @@
+# Secrets and local configuration
+.env
+.env.*
+*.pem
+*.key
+credentials*.json
+secrets*.json
+.config/
+.codex/
+.agents/
+.local-review/
+
+# Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Editors, build products, and local files
+.vscode/
+.idea/
+build/
+dist/
+*.egg-info/
+*.elf
+*.bin
+*.hex
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+desktop.ini
