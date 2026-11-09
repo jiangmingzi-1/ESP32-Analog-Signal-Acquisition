@@ -70,8 +70,10 @@ CSV Storage + Matplotlib Visualization
 安装 Python 依赖：
 
 ```bash
-pip install pyserial numpy matplotlib
+python -m pip install -r requirements.txt
 ```
+
+`requirements.txt` 列出 pyserial、numpy 和 matplotlib。当前未锁定版本；这是依赖清单，不代表已在完整本地环境验证兼容性。实际复测时应记录 Python 和各依赖的版本。
 
 ## 5. 项目功能
 
@@ -162,6 +164,7 @@ ESP32_Analog_Acquisition/
 ├── report/
 │   └── test_report.md
 │
+├── requirements.txt
 └── README.md
 ```
 
@@ -218,6 +221,20 @@ CSV 和两张 PNG 均保存到本次目录，控制台输出绝对保存路径�
 - 本次 Python 语法和离线输出检查属于软件验证，不代表重新编译、上传或完成真实串口采集。当前固件配合修改后 Python 程序的 60 秒端到端硬件复测尚未完成。
 
 ## 9. Limitations
+
+### 发布前验证状态
+
+| 验证项目 | 状态 |
+|---|---|
+| 历史60秒采集 | 已完成，有实验记录 |
+| 历史20Hz采样验证 | 已完成，有结果 |
+| 当前固件源码追溯 | 待重新建立 |
+| 当前固件重新编译上传 | 待验证 |
+| 最新Python版本本地运行 | 待验证 |
+| 最新版本真实串口采集 | 待验证 |
+| 最新版本图表生成 | 待验证 |
+
+以上历史结果属于用户此前完成的实验；Codex 的静态检查不改变待验证项。当前源码的 SHA256 和版本记录见[测试报告](report/test_report.md)。生成源码哈希仅建立当前文件记录，不能补足历史烧录版本的追溯关系。
 
 当前项目主要验证基础模拟信号采集流程，尚未完成：
 
