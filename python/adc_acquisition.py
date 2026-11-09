@@ -9,7 +9,24 @@ matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 from pathlib import Path
-from tkinter import Tk, filedialog
+from datetime import datetime
+
+
+def create_run_directory(runs_dir):
+    """Atomically reserve a new directory; never reuse an existing run."""
+    runs_dir = Path(runs_dir).resolve()
+    runs_dir.mkdir(parents=True, exist_ok=True)
+    base_name = datetime.now().strftime("run_%Y%m%d_%H%M%S")
+    suffix = 0
+    while True:
+        name = base_name if suffix == 0 else f"{base_name}_{suffix:03d}"
+        candidate = runs_dir / name
+        try:
+            candidate.mkdir()
+        except FileExistsError:
+            suffix += 1
+        else:
+            return candidate
 
 
 # ==========================
@@ -127,26 +144,15 @@ if len(time_diff) > 0:
 # 5. 保存CSV
 # ==========================
 
-root = Tk()
-root.withdraw()
-root.attributes("-topmost", True)
-
-save_path = filedialog.asksaveasfilename(
-    initialfile="adc_60s.csv",
-    defaultextension=".csv",
-    filetypes=[("CSV文件", "*.csv")]
+save_dir = create_run_directory(
+    Path(__file__).resolve().parents[1] / "data" / "runs"
 )
-
-root.destroy()
-
-if not save_path:
-    raise RuntimeError("已取消CSV保存")
-
-save_dir = Path(save_path).parent
+save_path = save_dir / "adc_60s.csv"
+print("\n本次实验完整保存路径：", save_dir)
 
 with open(
     save_path,
-    "w",
+    "x",
     newline="",
     encoding="utf-8-sig"
 ) as f:
@@ -185,10 +191,8 @@ plt.ylim(-100, 4200)
 plt.grid(True)
 plt.tight_layout()
 
-plt.savefig(
-    save_dir / "adc_60s_curve.png",
-    dpi=200
-)
+with (save_dir / "adc_60s_curve.png").open("xb") as image_file:
+    plt.savefig(image_file, format="png", dpi=200)
 
 plt.close()
 
@@ -208,10 +212,8 @@ plt.ylabel("Frequency")
 plt.grid(True)
 plt.tight_layout()
 
-plt.savefig(
-    save_dir / "adc_distribution.png",
-    dpi=200
-)
+with (save_dir / "adc_distribution.png").open("xb") as image_file:
+    plt.savefig(image_file, format="png", dpi=200)
 
 plt.close()
 
